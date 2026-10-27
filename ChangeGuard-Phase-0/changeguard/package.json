@@ -1,19 +1,35 @@
 {
   "name": "changeguard",
   "version": "0.0.0",
-  "description": "Minimal ChangeGuard CLI foundation for Node.js and TypeScript projects.",
+  "description": "Inspect Git working-tree changes and optionally run npm tests, with explicit verification limits.",
   "license": "MIT",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gokulkumar400/ChangeGuard.git",
+    "directory": "ChangeGuard-Phase-0/changeguard"
+  },
+  "keywords": [
+    "cli",
+    "git",
+    "verification",
+    "testing"
+  ],
   "bin": {
     "changeguard": "./dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "lint": "eslint .",
+    "prepack": "npm run build",
     "validate:package": "npm pack --dry-run --json"
   },
   "devDependencies": {

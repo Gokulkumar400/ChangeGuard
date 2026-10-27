@@ -172,6 +172,13 @@ describe("npm test discovery", () => {
 });
 
 describe("verify command arguments", () => {
+  const directories: string[] = [];
+  afterAll(() => {
+    for (const directory of directories) {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
   it("rejects unsupported arguments without inspecting a repository", async () => {
     const stdout = capture();
     const stderr = capture();

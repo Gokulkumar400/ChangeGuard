@@ -23,7 +23,8 @@ who want a clearer, change-aware verification workflow.
 
 ## Project status
 
-**Phase 0 and Phase 1 are complete. Phase 2 release preparation is in progress.**
+**Phase 0 and Phase 1 are complete. Phase 2 release preparation is validated
+locally; final name and release-owner decisions remain pending.**
 The initial verifier is available for local development; it does not yet map
 tests to requirements or determine which behaviors a test covers. No npm package
 has been published.
@@ -32,11 +33,69 @@ Initial development and validation are planned to take place in Replit.
 See [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md) for the staged roadmap and
 [`REPLIT.md`](REPLIT.md) for handover and agent instructions.
 
-## Local command
+## Requirements and installation
 
-Build the package with `npm run build` from this directory. The local CLI
-supports `--help`, `--version`, and help/usage output when run without
-arguments.
+- Node.js 24 or newer (validated with Node.js 24.22.1 and npm 11.19.1).
+  The locked Vitest 5 development toolchain does not support Node.js 20.
+- Git on `PATH` for `verify`; npm on `PATH` for `verify --run-tests`.
+- No credentials, external service, or runtime npm dependencies are required.
+
+No npm release exists yet. Do not use `npm install changeguard` or
+`npx changeguard` as an installation path for this unreleased project.
+The package name remains provisional.
+
+From the imported repository root:
+
+```sh
+cd ChangeGuard-Phase-0/changeguard
+npm ci
+npm run build
+node dist/cli.js --help
+node dist/cli.js --version
+```
+
+If already inside the ChangeGuard package directory, omit the `cd` command.
+Run `npm run build` before `npm test`, since CLI process tests use `dist/`.
+Other checks are `npm run typecheck`, `npm run lint`, and
+`npm run validate:package`. Packing automatically rebuilds the CLI.
+
+For a local installation from the package directory:
+
+```sh
+pack_dir="$(mktemp -d)"
+npm pack --pack-destination "$pack_dir"
+install_dir="$(mktemp -d)"
+cd "$install_dir"
+npm init -y
+npm install "$pack_dir/changeguard-0.0.0.tgz"
+./node_modules/.bin/changeguard --help
+./node_modules/.bin/changeguard --version
+```
+
+Keep the tarball path when installing into another project. This installs only
+the built CLI, package metadata, README, changelog, and MIT license; no global
+install or npm publication is needed. Run the installed binary from the Git
+repository you want to inspect. `verify` uses that repository's top-level
+directory, not the installation directory or a nested workspace package.
+
+## CLI usage
+
+```text
+changeguard
+changeguard --help
+changeguard --version
+changeguard verify
+changeguard verify --run-tests
+```
+
+No arguments and `--help` print usage and exit `0`; `--version` prints
+`0.0.0` and exits `0`. Unsupported arguments exit `2` with an error on stderr.
+`verify` exits `0` for successful Git inspection, even when changes exist;
+it does not assert that changed behavior is correct. `verify --run-tests`
+exits `0` when the requested npm test script succeeds and `1` if it fails,
+times out, is missing, or inspection cannot complete. Verification errors
+exit `1`. Test failure details are suppressed: run `npm test` manually in the
+inspected repository root to see its output.
 
 ### Verify working-tree changes
 
