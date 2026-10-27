@@ -1,0 +1,26 @@
+{
+  "name": "changeguard",
+  "version": "0.0.0",
+  "description": "Minimal ChangeGuard CLI foundation for Node.js and TypeScript projects.",
+  "license": "MIT",
+  "bin": {
+    "changeguard": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "validate:package": "npm pack --dry-run --json"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "eslint": "^10.13.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "vitest": "^5.0.5"
+  }
+}

@@ -1,0 +1,6 @@
+# Local and generated files
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
